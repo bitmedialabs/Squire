@@ -182,8 +182,8 @@ const mapKeyToFormat = (
     };
 };
 
-keyHandlers[ctrlKey + 'b'] = mapKeyToFormat('B');
-keyHandlers[ctrlKey + 'i'] = mapKeyToFormat('I');
+keyHandlers[ctrlKey + 'b'] = mapKeyToFormat('STRONG');
+keyHandlers[ctrlKey + 'i'] = mapKeyToFormat('EM');
 keyHandlers[ctrlKey + 'u'] = mapKeyToFormat('U');
 keyHandlers[ctrlKey + 'Shift-7'] = mapKeyToFormat('S');
 keyHandlers[ctrlKey + 'Shift-5'] = mapKeyToFormat('SUB', { tag: 'SUP' });

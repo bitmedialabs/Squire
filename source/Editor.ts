@@ -1642,19 +1642,19 @@ class Squire {
     // ---
 
     bold(): Squire {
-        return this.changeFormat({ tag: 'B' });
+        return this.changeFormat({ tag: 'STRONG' });
     }
 
     removeBold(): Squire {
-        return this.changeFormat(null, { tag: 'B' });
+        return this.changeFormat(null, { tag: 'STRONG' });
     }
 
     italic(): Squire {
-        return this.changeFormat({ tag: 'I' });
+        return this.changeFormat({ tag: 'EM' });
     }
 
     removeItalic(): Squire {
-        return this.changeFormat(null, { tag: 'I' });
+        return this.changeFormat(null, { tag: 'EM' });
     }
 
     underline(): Squire {

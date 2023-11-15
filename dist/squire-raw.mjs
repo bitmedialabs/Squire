@@ -640,13 +640,13 @@ var styleToSemantic = {
   "font-weight": {
     regexp: /^bold|^700/i,
     replace() {
-      return createElement("B");
+      return createElement("STRONG");
     }
   },
   "font-style": {
     regexp: /^italic/i,
     replace() {
-      return createElement("I");
+      return createElement("EM");
     }
   },
   "font-family": {
@@ -729,8 +729,8 @@ var fontSizes = {
   "7": "48"
 };
 var stylesRewriters = {
-  STRONG: replaceWithTag("B"),
-  EM: replaceWithTag("I"),
+  B: replaceWithTag("STRONG"),
+  I: replaceWithTag("EM"),
   INS: replaceWithTag("U"),
   STRIKE: replaceWithTag("S"),
   SPAN: replaceStyles,
@@ -2016,8 +2016,8 @@ var mapKeyToFormat = (tag, remove) => {
     }
   };
 };
-keyHandlers[ctrlKey + "b"] = mapKeyToFormat("B");
-keyHandlers[ctrlKey + "i"] = mapKeyToFormat("I");
+keyHandlers[ctrlKey + "b"] = mapKeyToFormat("STRONG");
+keyHandlers[ctrlKey + "i"] = mapKeyToFormat("EM");
 keyHandlers[ctrlKey + "u"] = mapKeyToFormat("U");
 keyHandlers[ctrlKey + "Shift-7"] = mapKeyToFormat("S");
 keyHandlers[ctrlKey + "Shift-5"] = mapKeyToFormat("SUB", { tag: "SUP" });
@@ -3282,16 +3282,16 @@ var Squire = class {
   }
   // ---
   bold() {
-    return this.changeFormat({ tag: "B" });
+    return this.changeFormat({ tag: "STRONG" });
   }
   removeBold() {
-    return this.changeFormat(null, { tag: "B" });
+    return this.changeFormat(null, { tag: "STRONG" });
   }
   italic() {
-    return this.changeFormat({ tag: "I" });
+    return this.changeFormat({ tag: "EM" });
   }
   removeItalic() {
-    return this.changeFormat(null, { tag: "I" });
+    return this.changeFormat(null, { tag: "EM" });
   }
   underline() {
     return this.changeFormat({ tag: "U" });

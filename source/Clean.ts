@@ -24,13 +24,13 @@ const styleToSemantic: Record<
     'font-weight': {
         regexp: /^bold|^700/i,
         replace(): HTMLElement {
-            return createElement('B');
+            return createElement('STRONG');
         },
     },
     'font-style': {
         regexp: /^italic/i,
         replace(): HTMLElement {
-            return createElement('I');
+            return createElement('EM');
         },
     },
     'font-family': {
@@ -130,8 +130,8 @@ const fontSizes: Record<string, string> = {
 };
 
 const stylesRewriters: Record<string, StyleRewriter> = {
-    STRONG: replaceWithTag('B'),
-    EM: replaceWithTag('I'),
+    B: replaceWithTag('STRONG'),
+    I: replaceWithTag('EM'),
     INS: replaceWithTag('U'),
     STRIKE: replaceWithTag('S'),
     SPAN: replaceStyles,
