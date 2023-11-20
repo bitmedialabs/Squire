@@ -450,11 +450,26 @@
         }
       }
     } else if (node instanceof Element && !node.querySelector("BR")) {
-      fixer = createElement("BR");
       let parent = node;
       let child;
-      while ((child = parent.lastElementChild) && !isInline(child)) {
+      while (true) {
+        child = parent.firstChild;
+        while (!child && parent) {
+          if (parent === node) {
+            break;
+          }
+          child = parent.nextSibling;
+          if (!child) {
+            parent = parent.parentNode;
+          }
+        }
+        if (!child || isLeaf(child) || child instanceof Text && child.data) {
+          break;
+        }
         parent = child;
+      }
+      if (!child) {
+        fixer = createElement("BR");
       }
     }
     if (fixer) {
@@ -594,12 +609,15 @@
     }
     detach(container);
     offset = block.childNodes.length;
-    const last = block.lastChild;
-    if (last && last.nodeName === "BR") {
-      block.removeChild(last);
-      offset -= 1;
+    const isNextEmpty = !next.lastChild || next.lastChild.nodeName === "BR";
+    if (!isNextEmpty) {
+      const last = block.lastChild;
+      if (last && last.nodeName === "BR") {
+        block.removeChild(last);
+        offset -= 1;
+      }
+      block.appendChild(empty(next));
     }
-    block.appendChild(empty(next));
     range.setStart(block, offset);
     range.collapse(true);
     mergeInlines(block, range);

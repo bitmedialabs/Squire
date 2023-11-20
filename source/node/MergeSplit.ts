@@ -7,7 +7,7 @@ import {
     detach,
     empty,
 } from './Node';
-import { isInline, isContainer } from './Category';
+import { isInline, isContainer, isLeaf } from './Category';
 
 // ---
 
@@ -38,11 +38,26 @@ const fixCursor = (node: Node): Node => {
             }
         }
     } else if (node instanceof Element && !node.querySelector('BR')) {
-        fixer = createElement('BR');
-        let parent: Element = node;
-        let child: Element | null;
-        while ((child = parent.lastElementChild) && !isInline(child)) {
+        let parent: Node | null = node;
+        let child: Node | null;
+        while (true) {
+            child = parent.firstChild;
+            while(!child && parent) {
+                if (parent === node) {
+                    break;
+                }
+                child = parent.nextSibling;
+                if (!child) {
+                    parent = parent.parentNode;
+                }
+            }
+            if (!child || isLeaf(child) || (child instanceof Text && child.data)) {
+                break;
+            }
             parent = child;
+        }
+        if (!child) {
+            fixer = createElement('BR');
         }
     }
     if (fixer) {
@@ -240,14 +255,19 @@ const mergeWithBlock = (
 
     offset = block.childNodes.length;
 
-    // Remove extra <BR> fixer if present.
-    const last = block.lastChild;
-    if (last && last.nodeName === 'BR') {
-        block.removeChild(last);
-        offset -= 1;
-    }
+    const isNextEmpty = !next.lastChild ||
+        next.lastChild.nodeName === 'BR';
 
-    block.appendChild(empty(next));
+    if (!isNextEmpty) {
+        // Remove extra <BR> fixer if present.
+        const last = block.lastChild;
+        if (last && last.nodeName === 'BR') {
+            block.removeChild(last);
+            offset -= 1;
+        }
+
+        block.appendChild(empty(next));
+    }
 
     range.setStart(block, offset);
     range.collapse(true);
